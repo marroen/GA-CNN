@@ -13,6 +13,7 @@ from torchsummary import summary
 import numpy as np
 from torcheval.metrics.functional import multiclass_f1_score
 from sklearn.metrics import confusion_matrix
+from hp import HPChromosome
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
@@ -257,10 +258,23 @@ def train_model(model, train_loader, val_loader, device, num_epochs, learning_ra
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                       .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
 
-
-
-
-def cnn_parametrized(num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen):
+def cnn_parametrized(hp):
+    num_conv = hp.num_conv
+    num_kernels = hp.num_kernels
+    kernel_size = hp.kernel_size
+    conv_stride = hp.conv_stride
+    num_pooling = hp.num_pooling
+    pool_size = hp.pool_size
+    dropout = hp.dropout
+    dropout_rate = hp.dropout_rate
+    batch_norm = hp.batch_norm
+    learning_rate = hp.learning_rate
+    epochs = hp.epochs
+    batch_size = hp.batch_size
+    momentum = hp.momentum
+    l1_norm_rate = hp.l1_norm_rate
+    optimizer = hp.optimizer
+    l2_pen = hp.l2_pen
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = LeNet5(num_classes = 10, input_dim = 28, num_conv = num_conv, num_kernels = num_kernels, kernel_size = kernel_size, conv_stride = conv_stride, num_pooling = num_pooling, pool_size = pool_size, pool_stride = pool_stride, num_dense= num_dense, num_neurons= num_neurons, padding=padding, activation_fun=activation_fun, pool_type= pool_type, dropout = dropout, dropout_rate = dropout_rate, batch_norm =batch_norm).to(device)
     print("model", model.valid)

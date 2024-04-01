@@ -1,4 +1,5 @@
 from hp import HPChromosome
+from cnn import cnn_parameterized
 import numpy as np
 import random as rng
 
@@ -90,10 +91,28 @@ def crossover(parent1, parent2):
             case 21:
                 child1.l2_pen = chosen_parent.l2_pen
                 child2.l2_pen = other_parent.l2_pen
+    return [child1, child2]
 
-def selection():
+def selection(population):
+    selected = []
+    random.shuffle(population)
     print("selection")
+    for i in range(len(population)-1):
+        if (i % 2 == 0):
+            children = crossover(population[i], population[i+1])
+            winners = tournament(population[i], population[i+1], children)
+            selected.append(winners)
+    return selected
 
-def tournament():
+    '''
+    num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen
+    '''
+
+# TODO: decide fitness metrics
+def tournament(parents, children):
+    parent1_fitness = cnn_parameterized(parents[0])
+    parent2_fitness = cnn_parameterized(parents[1])
+    child1_fitness = cnn_parameterized(children[0])
+    child2_fitness = cnn_parameterized(children[1])
     print("tournament")
 
