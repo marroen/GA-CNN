@@ -13,6 +13,7 @@ def create_population(n):
         population = np.append(population, HPChromosome())
     return population
 
+# TODO: replace with heuristic for ranges, uniform
 def crossover(parent1, parent2):
     total_hp = 22
     child1 = HPChromosome()
