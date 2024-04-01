@@ -75,7 +75,7 @@ def get_optimizer_type(num, learning_rate, momentum, model, l2_pen):
         return torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=l2_pen, momentum=momentum)
 
 class LeNet5(nn.Module):
-    def __init__(self, num_classes, input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, drop_out, dropout_rate, batch_norm):
+    def __init__(self, num_classes, input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm):
         super().__init__()
 
         con_out = calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, padding)
@@ -121,7 +121,7 @@ class LeNet5(nn.Module):
             else:
                 layers.append(nn.Linear(num_neurons, num_neurons))
                 layers.append(get_activation(activation_fun))
-                if drop_out:
+                if dropout:
                     layers.append(nn.Dropout(p=dropout_rate))
             num_dense = num_dense - 1
         self.dense_layers = nn.Sequential(*layers)
@@ -260,9 +260,9 @@ def train_model(model, train_loader, val_loader, device, num_epochs, learning_ra
 
 
 
-def cnn_parametrized(num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, drop_out, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen):
+def cnn_parametrized(num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = LeNet5(num_classes = 10, input_dim = 28, num_conv = num_conv, num_kernels = num_kernels, kernel_size = kernel_size, conv_stride = conv_stride, num_pooling = num_pooling, pool_size = pool_size, pool_stride = pool_stride, num_dense= num_dense, num_neurons= num_neurons, padding=padding, activation_fun=activation_fun, pool_type= pool_type, drop_out = drop_out, dropout_rate = dropout_rate, batch_norm =batch_norm).to(device)
+    model = LeNet5(num_classes = 10, input_dim = 28, num_conv = num_conv, num_kernels = num_kernels, kernel_size = kernel_size, conv_stride = conv_stride, num_pooling = num_pooling, pool_size = pool_size, pool_stride = pool_stride, num_dense= num_dense, num_neurons= num_neurons, padding=padding, activation_fun=activation_fun, pool_type= pool_type, dropout = dropout, dropout_rate = dropout_rate, batch_norm =batch_norm).to(device)
     print("model", model.valid)
 
     if model.valid:
