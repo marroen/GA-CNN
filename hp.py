@@ -15,7 +15,7 @@ class HPChromosome:
         self.num_conv = rng.randint(1,5) if num_conv is None else 5
         self.num_kernels = rng.randint(1,10) if num_kernels is None else 16
         self.kernel_size = rng.randrange(3,7,2) if kernel_size is None else 3
-        self.conv_stride = rng.randint(1,5) if conv_stride is None else 1
+        self.conv_stride = rng.randint(1,3) if conv_stride is None else 1
         self.num_pooling = rng.randint(0,2) if num_pooling is None else 2
         self.pool_size = rng.randrange(2,8,2) if pool_size is None else 2
         self.pool_stride = rng.randint(1,2) if pool_stride is None else 2
