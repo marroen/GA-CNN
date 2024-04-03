@@ -14,6 +14,7 @@ import numpy as np
 from torcheval.metrics.functional import multiclass_f1_score
 from sklearn.metrics import confusion_matrix
 from hp import HPChromosome
+import math
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
@@ -56,16 +57,18 @@ def get_activation(num):
     if num == 2:
         return nn.ELU()
     if num == 3:
-        return nn.Sigmoid
-def get_pool_type(num, stride, kernel_size):
+        return nn.Sigmoid()
+def get_pool_type(num, kernel_size, stride):
     if num == 0:
         return nn.MaxPool2d(kernel_size=kernel_size, stride=stride)
     if num == 1:
         return nn.AvgPool2d(kernel_size=kernel_size, stride=stride)
+    '''
     if num == 2:
         return nn.FractionalMaxPool2d(kernel_size=kernel_size, stride=stride)
     if num == 3:
         return nn.AdaptiveMaxPool2d(kernel_size=kernel_size, stride=stride)
+    '''
 
 def get_optimizer_type(num, learning_rate, momentum, model, l2_pen):
     if num == 0:
@@ -84,7 +87,7 @@ class LeNet5(nn.Module):
         self.valid = True
         if con_out == 0 or num_conv == 0 or num_dense == 0:
             self.valid = False
-        if pool_type >3 or pool_type < 0:
+        if pool_type >1 or pool_type < 0:
             self.valid = False
         if activation_fun >3 or activation_fun < 0:
             self.valid = False
@@ -212,13 +215,13 @@ def evaluate(model, test_loader, criterion):
     TP, FP, TN, FN = conf_matrix[1, 1], conf_matrix[0, 1], conf_matrix[0, 0], conf_matrix[1, 0]
 
     # Calculate precision and recall
-    precision = TP / (TP + FP)
-    recall = TP / (TP + FN)
+    precision = TP / ((TP + FP) + 0.001)
+    recall = TP / ((TP + FN) + 0.001)
 
     print(f"Precision: {precision:.4f}")
     print(f"Recall: {recall:.4f}")
 
-    f1_score = 2 * (precision * recall) / (precision + recall)
+    f1_score = 2 * (precision * recall) / ((precision + recall) + 0.001)
     return test_loss, accuracy, f1_score
 
 def weights_init(m):
@@ -258,13 +261,19 @@ def train_model(model, train_loader, val_loader, device, num_epochs, learning_ra
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                       .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
 
-def cnn_parametrized(hp):
+def cnn_parameterized(hp):
     num_conv = hp.num_conv
     num_kernels = hp.num_kernels
     kernel_size = hp.kernel_size
     conv_stride = hp.conv_stride
     num_pooling = hp.num_pooling
     pool_size = hp.pool_size
+    pool_stride = hp.pool_stride
+    num_dense = hp.num_dense
+    num_neurons = hp.num_neurons
+    padding = hp.padding
+    activation_fun = hp.activation_fun
+    pool_type = hp.pool_type
     dropout = hp.dropout
     dropout_rate = hp.dropout_rate
     batch_norm = hp.batch_norm
@@ -287,8 +296,16 @@ def cnn_parametrized(hp):
         train_model(model, train_test_loader, test_loader, device, num_epochs=epochs, learning_rate=learning_rate, num_classes=10, optimizer=optimizer, momentum=momentum, l2_pen=l2_pen, l1_norm_rate=l1_norm_rate)
 
         test_loss, test_accuracy, f1_score = evaluate(model, test_loader, nn.CrossEntropyLoss())
-        print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%, F1: {f1_score:.2f}')
-        return test_loss, test_accuracy, f1_score
+        print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}%, F1: {f1_score:.4f}')
+        return combined_eval(test_loss, test_accuracy, f1_score)
     else:
         print("Not possible model")
-        return -1, -1, -1
+        return -1
+
+def combined_eval(loss, accuracy, f1_score):
+    if math.isnan(loss):
+        loss = 0
+    if loss > 1:
+        loss = 1
+    loss_diff = 1-loss
+    return (loss_diff + (accuracy/100) + f1_score) / 3

@@ -5,14 +5,96 @@ import random as rng
 
 def init(n):
     print("init")
-    population = create_population(n)
+    pop_fit_map = create_pop_fit_map(create_pop(n)) 
     print("pop. created")
+    run(pop_fit_map)
 
-def create_population(n):
-    population = np.empty(0)
+def run(pop_fit_map):
+    for i in range(5):
+        print("Generation", i)
+        #pop_fit_map = selection(pop_fit_map)
+        selection(pop_fit_map)
+        print("Average fitness: ", get_average_fit(pop_fit_map))
+    print("Final best HP:", max(pop_fit_map.values()))
+
+def create_pop(n):
+    pop = np.empty(0)
     for _ in range(n):
-        population = np.append(population, HPChromosome())
-    return population
+        pop = np.append(pop, HPChromosome())
+    return pop
+
+def create_pop_fit_map(pop):
+    hp_fits = {}
+    for hp in pop:
+        print("num_conv:", hp.num_conv)
+        print("num_kernels:", hp.num_kernels)
+        print("kernel_size:", hp.kernel_size)
+        print("conv_stride:", hp.conv_stride)
+        print("num_pooling:", hp.num_pooling)
+        print("pool_size:", hp.pool_size)
+        print("pool_stride:", hp.pool_stride)
+        print("num_dense:", hp.num_dense)
+        print("num_neurons:", hp.num_neurons)
+        print("padding:", hp.padding)
+        print("activation_fun:", hp.activation_fun)
+        print("pool_type:", hp.pool_type)
+        print("dropout:", hp.dropout)
+        print("dropout_rate:", hp.dropout_rate)
+        print("batch_norm:", hp.batch_norm)
+        print("learning_rate:", hp.learning_rate)
+        print("epochs:", hp.epochs)
+        print("batch_size:", hp.batch_size)
+        print("momentum:", hp.momentum)
+        print("l1_norm_rate:", hp.l1_norm_rate)
+        print("optimizer:", hp.optimizer)
+        print("l2_pen:", hp.l2_pen)
+        hp_fits[hp] = cnn_parameterized(hp)
+    return hp_fits
+
+def get_average_fit(pop_fit_map):
+    return sum(pop_fit_map.values()) / len(pop_fit_map)
+
+def selection(pop_fit_map):
+    # After running, len(selected) = n
+    #selected = []
+    keys = list(pop_fit_map.keys())
+    rng.shuffle(keys)
+    print("selection")
+    for i in range(len(keys)-1):
+        if (i % 2 == 0):
+            # Select two parents from shuffled keys list
+            mother = (keys[i], pop_fit_map[keys[i]])
+            father = (keys[i+1], pop_fit_map[keys[i+1]])
+            # Get children based on just parent keys
+            children = crossover(keys[i], keys[i+1])
+            # Match parents, with known fitness, against children
+            winners = tournament(mother, father, children)
+            # Update winners to population
+            pop_fit_map.pop(keys[i])
+            pop_fit_map.pop(keys[i+1])
+            for winner in winners:
+                pop_fit_map[winner[0]] = winner[1]
+    print("Ensuring len(pop_fit_map) == n:", len(pop_fit_map))
+    #return selected
+
+def tournament(mother, father, children):
+    child1_fitness = cnn_parameterized(children[0])
+    child2_fitness = cnn_parameterized(children[1])
+    print("tournament")
+    
+    first = (children[0], child1_fitness)
+    second = (children[1], child2_fitness)
+    parents = [mother, father]
+    for parent in parents:
+        if parent[1] > first[1]:
+            second = first
+            first = parent
+        elif parent[1] > second[1]:
+            second = parent
+    return [first, second]
+
+def mutate():
+    print("mutate")
 
 # TODO: replace with heuristic for ranges, uniform
 def crossover(parent1, parent2):
@@ -93,26 +175,7 @@ def crossover(parent1, parent2):
                 child2.l2_pen = other_parent.l2_pen
     return [child1, child2]
 
-def selection(population):
-    selected = []
-    random.shuffle(population)
-    print("selection")
-    for i in range(len(population)-1):
-        if (i % 2 == 0):
-            children = crossover(population[i], population[i+1])
-            winners = tournament(population[i], population[i+1], children)
-            selected.append(winners)
-    return selected
-
     '''
     num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen
     '''
-
-# TODO: decide fitness metrics
-def tournament(parents, children):
-    parent1_fitness = cnn_parameterized(parents[0])
-    parent2_fitness = cnn_parameterized(parents[1])
-    child1_fitness = cnn_parameterized(children[0])
-    child2_fitness = cnn_parameterized(children[1])
-    print("tournament")
 
