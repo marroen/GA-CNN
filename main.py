@@ -3,7 +3,7 @@ import ga
 from hp import HPChromosome
 
 def main():
-    ga.init(20, 100, 0.05)
+    ga.init(100, 20, 0.05)
     '''
     hp = HPChromosome(num_conv = 5, num_kernels = 16, kernel_size = 3, conv_stride = 1, num_pooling = 2, pool_size = 2, pool_stride = 2,
                       num_dense= 4, num_neurons= 120, padding=1, activation_fun=0, pool_type= 0, dropout = 1, dropout_rate = 0.2,
