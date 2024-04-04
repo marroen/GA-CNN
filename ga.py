@@ -3,19 +3,91 @@ from cnn import cnn_parameterized
 import numpy as np
 import random as rng
 
-def init(n):
-    print("init")
+def init(n, m, mutation_rate):
+    print("----- CREATING POPULATION -----")
     pop_fit_map = create_pop_fit_map(create_pop(n)) 
-    print("pop. created")
-    run(pop_fit_map)
+    print("----- POPULATION CREATED -----")
+    run(pop_fit_map, m, mutation_rate)
 
-def run(pop_fit_map):
-    for i in range(5):
-        print("Generation", i)
-        #pop_fit_map = selection(pop_fit_map)
-        selection(pop_fit_map)
-        print("Average fitness: ", get_average_fit(pop_fit_map))
-    print("Final best HP:", max(pop_fit_map.values()))
+def run(pop_fit_map, m, mutation_rate):
+    print("----- RUN STARTING -----")
+    for i in range(m):
+        print("----- GENERATION STARTING -----")
+        print("Number", i)
+        selection(pop_fit_map, mutation_rate)
+        print("----- AVERAGE FITNESS ----- ")
+        print(get_average_fit(pop_fit_map))
+        print("----- GENERATION ENDING -----")
+
+    print("----- RUN ENDED -----")
+
+    best_key = reversed(sorted(pop_fit_map, key=lambda k: pop_fit_map[k]))[0]
+    best_value = pop_fit_map[best_key]
+
+    print("----- ANALYZING BEST HP -----")
+
+    print("Final best HP:", best_value)
+    print("Best HP values:")
+    print_hp_values(best_key)
+
+    print("----- ANALYZED BEST HP -----")
+
+    print("----- ANALYZING TOP 5 HP -----")
+
+    print("HP values and fitnesses of top 5:")
+    i = 0
+    for key in reversed(sorted(pop_fit_map, key=lambda k: pop_fit_map[k])):
+        if i <= 5:
+            value = pop_fit_map[key]
+            print("----- ANALYZING TOP -----")
+            print("Number", i)
+            print("HP fitness:", value)
+            print("HP values:")
+            print_hp_values(key)
+            print("----- ANALYZED TOP -----")
+        i += 1
+
+    print("----- ANALYZED TOP 5 HP -----")
+
+    print("----- ANALYZING BOTTOM 5 HP -----")
+
+    print("HP values and fitnesses of bottom 5:")
+    i = 0
+    for key in sorted(pop_fit_map, key=lambda k: pop_fit_map[k]):
+        if i <= 5:
+            value = pop_fit_map[key]
+            print("----- ANALYZING BOTTOM -----")
+            print("Number", i)
+            print("HP fitness:", value)
+            print("HP values:")
+            print_hp_values(key)
+            print("----- ANALYZED BOTTOM -----")
+        i += 1
+    print("----- ANALYZED BOTTOM 5 HP -----")
+
+def print_hp_values(hp):
+    print("num_conv:", hp.num_conv)
+    print("num_kernels:", hp.num_kernels)
+    print("kernel_size:", hp.kernel_size)
+    print("conv_stride:", hp.conv_stride)
+    print("num_pooling:", hp.num_pooling)
+    print("pool_size:", hp.pool_size)
+    print("pool_stride:", hp.pool_stride)
+    print("num_dense:", hp.num_dense)
+    print("num_neurons:", hp.num_neurons)
+    print("padding:", hp.padding)
+    print("activation_fun:", hp.activation_fun)
+    print("pool_type:", hp.pool_type)
+    print("dropout:", hp.dropout)
+    print("dropout_rate:", hp.dropout_rate)
+    print("batch_norm:", hp.batch_norm)
+    print("learning_rate:", hp.learning_rate)
+    print("epochs:", hp.epochs)
+    print("batch_size:", hp.batch_size)
+    print("momentum:", hp.momentum)
+    print("l1_norm_rate:", hp.l1_norm_rate)
+    print("optimizer:", hp.optimizer)
+    print("l2_pen:", hp.l2_pen)
 
 def create_pop(n):
     pop = np.empty(0)
@@ -26,45 +98,24 @@ def create_pop(n):
 def create_pop_fit_map(pop):
     hp_fits = {}
     for hp in pop:
-        print("num_conv:", hp.num_conv)
-        print("num_kernels:", hp.num_kernels)
-        print("kernel_size:", hp.kernel_size)
-        print("conv_stride:", hp.conv_stride)
-        print("num_pooling:", hp.num_pooling)
-        print("pool_size:", hp.pool_size)
-        print("pool_stride:", hp.pool_stride)
-        print("num_dense:", hp.num_dense)
-        print("num_neurons:", hp.num_neurons)
-        print("padding:", hp.padding)
-        print("activation_fun:", hp.activation_fun)
-        print("pool_type:", hp.pool_type)
-        print("dropout:", hp.dropout)
-        print("dropout_rate:", hp.dropout_rate)
-        print("batch_norm:", hp.batch_norm)
-        print("learning_rate:", hp.learning_rate)
-        print("epochs:", hp.epochs)
-        print("batch_size:", hp.batch_size)
-        print("momentum:", hp.momentum)
-        print("l1_norm_rate:", hp.l1_norm_rate)
-        print("optimizer:", hp.optimizer)
-        print("l2_pen:", hp.l2_pen)
+        #print_hp_values(hp)
         hp_fits[hp] = cnn_parameterized(hp)
     return hp_fits
 
 def get_average_fit(pop_fit_map):
     return sum(pop_fit_map.values()) / len(pop_fit_map)
 
-def selection(pop_fit_map):
-    # After running, len(selected) = n
-    #selected = []
+def selection(pop_fit_map, mutation_rate):
     keys = list(pop_fit_map.keys())
     rng.shuffle(keys)
-    print("selection")
     for i in range(len(keys)-1):
         if (i % 2 == 0):
             # Select two parents from shuffled keys list
             mother = (keys[i], pop_fit_map[keys[i]])
             father = (keys[i+1], pop_fit_map[keys[i+1]])
+            # (Possibly) mutate parents
+            mutate(keys[i], mutation_rate)
+            mutate(keys[i+1], mutation_rate)
             # Get children based on just parent keys
             children = crossover(keys[i], keys[i+1])
             # Match parents, with known fitness, against children
@@ -74,13 +125,11 @@ def selection(pop_fit_map):
             pop_fit_map.pop(keys[i+1])
             for winner in winners:
                 pop_fit_map[winner[0]] = winner[1]
-    print("Ensuring len(pop_fit_map) == n:", len(pop_fit_map))
-    #return selected
+    #print("Ensuring len(pop_fit_map) == n:", len(pop_fit_map))
 
 def tournament(mother, father, children):
     child1_fitness = cnn_parameterized(children[0])
     child2_fitness = cnn_parameterized(children[1])
-    print("tournament")
     
     first = (children[0], child1_fitness)
     second = (children[1], child2_fitness)
@@ -93,15 +142,61 @@ def tournament(mother, father, children):
             second = parent
     return [first, second]
 
-def mutate():
-    print("mutate")
-
-# TODO: replace with heuristic for ranges, uniform
+def mutate(hp, mutation_rate):
+    total_hp = 22
+    if rng.random() < mutation_rate:
+        rnd = rng.random()
+        i = rng.randint(0, 22)
+        match i:
+            case 0:
+                hp.num_conv = rng.randint(1,5)
+            case 1:
+                hp.num_kernels = rng.randint(1,20)
+            case 2:
+                hp.kernel_size = rng.randint(3,5,2)
+            case 3:
+                hp.conv_stride = rng.randrange(3,5,2)
+            case 4:
+                hp.num_pooling = rng.randint(0,2)
+            case 5:
+                hp.pool_size = 2
+            case 6:
+                hp.pool_stride = rng.randint(1,2)
+            case 7:
+                hp.num_dense = rng.randint(1,5)
+            case 8:
+                hp.num_neurons = rng.randint(100, 200)
+            case 9:
+                hp.padding = rng.randint(0,5)
+            case 10:
+                hp.activation_fun = rng.randint(0,3)
+            case 11:
+                hp.pool_type = rng.randint(0,1)
+            case 12:
+                hp.dropout = rng.randint(0,1)
+            case 13:
+                hp.dropout_rate = rng.uniform(0.2, 0.5)
+            case 14:
+                hp.batch_norm = rng.randint(0,1)
+            case 15:
+                hp.learning_rate = rng.uniform(0.00001, 1)
+            case 16:
+                hp.epochs = rng.randint(1,50)
+            case 17:
+                hp.batch_size = rng.randint(20,100)
+            case 18:
+                hp.momentum = rng.uniform(0.5, 0.95)
+            case 19:
+                hp.l1_norm_rate = rng.uniform(0.00001, 1)
+            case 20:
+                hp.optimizer = rng.randint(0,2)
+            case 21:
+                hp.l2_pen = rng.uniform(0.00001, 1)
+        
 def crossover(parent1, parent2):
     total_hp = 22
     child1 = HPChromosome()
     child2 = HPChromosome()
-    print("crossover")
     for i in range(total_hp):
         rnd = rng.random()
         chosen_parent = parent1 if round(rnd) == 1 else parent2

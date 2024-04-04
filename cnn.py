@@ -47,7 +47,7 @@ def calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride,
         print(out_dim)
     out_dim = int(out_dim * out_dim * num_kernels)
     return out_dim
-print("test out", calc_output_size(28, 5, 16, 5, 1, 1, 2, 2, 0))
+#print("test out", calc_output_size(28, 5, 16, 5, 1, 1, 2, 2, 0))
 
 def get_activation(num):
     if num == 0:
@@ -83,7 +83,7 @@ class LeNet5(nn.Module):
         super().__init__()
 
         con_out = calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, padding)
-        print("con_out", con_out)
+        #print("con_out", con_out)
         self.valid = True
         if con_out == 0 or num_conv == 0 or num_dense == 0:
             self.valid = False
@@ -155,7 +155,7 @@ def get_data(batch_size=64, split=0.8):
 
 
     train_test_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    print(f"train_dataset dataset size: {len(train_dataset)}")
+    #print(f"train_dataset dataset size: {len(train_dataset)}")
     # Split the training dataset into training and validation sets
     train_size = int(split * len(train_dataset))
     val_size = len(train_dataset) - train_size
@@ -167,9 +167,9 @@ def get_data(batch_size=64, split=0.8):
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     # Print dataset sizes
-    print(f"Training dataset size: {len(train_dataset)}")
-    print(f"Validation dataset size: {len(val_dataset)}")
-    print(f"Test dataset size: {len(test_dataset)}")
+    #print(f"Training dataset size: {len(train_dataset)}")
+    #print(f"Validation dataset size: {len(val_dataset)}")
+    #print(f"Test dataset size: {len(test_dataset)}")
 
 
     return train_loader, val_loader, test_loader, train_test_loader
@@ -218,8 +218,8 @@ def evaluate(model, test_loader, criterion):
     precision = TP / ((TP + FP) + 0.001)
     recall = TP / ((TP + FN) + 0.001)
 
-    print(f"Precision: {precision:.4f}")
-    print(f"Recall: {recall:.4f}")
+    #print(f"Precision: {precision:.4f}")
+    #print(f"Recall: {recall:.4f}")
 
     f1_score = 2 * (precision * recall) / ((precision + recall) + 0.001)
     return test_loss, accuracy, f1_score
@@ -257,9 +257,11 @@ def train_model(model, train_loader, val_loader, device, num_epochs, learning_ra
             loss.backward()
             optimizer.step()
 
+            '''
             if (i + 1) % 400 == 0:
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
                       .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+            '''
 
 def cnn_parameterized(hp):
     num_conv = hp.num_conv
@@ -296,16 +298,16 @@ def cnn_parameterized(hp):
         train_model(model, train_test_loader, test_loader, device, num_epochs=epochs, learning_rate=learning_rate, num_classes=10, optimizer=optimizer, momentum=momentum, l2_pen=l2_pen, l1_norm_rate=l1_norm_rate)
 
         test_loss, test_accuracy, f1_score = evaluate(model, test_loader, nn.CrossEntropyLoss())
-        print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}%, F1: {f1_score:.4f}')
-        return combined_eval(test_loss, test_accuracy, f1_score)
+        #print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}%, F1: {f1_score:.4f}')
+        fitness = combined_eval(test_loss, test_accuracy, f1_score)
+        print("Fitness of this model:", fitness)
+        return fitness
     else:
         print("Not possible model")
         return -1
 
 def combined_eval(loss, accuracy, f1_score):
-    if math.isnan(loss):
-        loss = 0
-    if loss > 1:
+    if math.isnan(loss) or loss > 1:
         loss = 1
     loss_diff = 1-loss
     return (loss_diff + (accuracy/100) + f1_score) / 3
