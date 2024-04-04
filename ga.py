@@ -10,13 +10,16 @@ def init(n, m, mutation_rate):
     run(pop_fit_map, m, mutation_rate)
 
 def run(pop_fit_map, m, mutation_rate):
+    average_fits = []
     print("----- RUN STARTING -----")
     for i in range(m):
         print("----- GENERATION STARTING -----")
         print("Number", i)
         selection(pop_fit_map, mutation_rate)
         print("----- AVERAGE FITNESS ----- ")
-        print(get_average_fit(pop_fit_map))
+        average_fit = get_average_fit(pop_fit_map)
+        print(average_fit)
+        average_fits.append(average_fit)
         print("----- GENERATION ENDING -----")
 
     print("----- RUN ENDED -----")
@@ -64,6 +67,10 @@ def run(pop_fit_map, m, mutation_rate):
             print("----- ANALYZED BOTTOM -----")
         i += 1
     print("----- ANALYZED BOTTOM 5 HP -----")
+
+    print("----- AVERAGE FITNESSES -----")
+    for average_fit in average_fits:
+        print(average_fit)
 
 def print_hp_values(hp):
     print("num_conv:", hp.num_conv)
