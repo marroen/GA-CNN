@@ -160,9 +160,9 @@ def mutate(hp, mutation_rate):
             case 1:
                 hp.num_kernels = rng.randint(1,20)
             case 2:
-                hp.kernel_size = rng.randint(3,5,2)
+                hp.kernel_size = rng.randrange(3,5,2)
             case 3:
-                hp.conv_stride = rng.randrange(3,5,2)
+                hp.conv_stride = rng.randint(1,2)
             case 4:
                 hp.num_pooling = rng.randint(0,2)
             case 5:
