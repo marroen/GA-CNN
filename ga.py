@@ -24,7 +24,7 @@ def run(pop_fit_map, m, mutation_rate):
 
     print("----- RUN ENDED -----")
 
-    best_key = reversed(sorted(pop_fit_map, key=lambda k: pop_fit_map[k]))[0]
+    best_key = list(reversed(sorted(pop_fit_map, key=lambda k: pop_fit_map[k])))[0]
     best_value = pop_fit_map[best_key]
 
     print("----- ANALYZING BEST HP -----")

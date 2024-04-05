@@ -36,7 +36,6 @@ def calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride,
             if out_dim < 1:
                 return 0
             num_conv = num_conv - 1
-        print(out_dim)
         if num_pooling > 0:
             out_dim = out_dim - pool_size
             out_dim = out_dim // pool_stride
@@ -44,7 +43,6 @@ def calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride,
             if out_dim < 1:
                 return 0
             num_pooling = num_pooling - 1
-        print(out_dim)
     out_dim = int(out_dim * out_dim * num_kernels)
     return out_dim
 #print("test out", calc_output_size(28, 5, 16, 5, 1, 1, 2, 2, 0))
@@ -150,8 +148,8 @@ def get_data(batch_size=64, split=0.8):
     test_dataset = datasets.FashionMNIST(root='./data', train=False, transform=transform, download=True)
 
     #This is to use only 10% of the data for faster training. Comment it at the end
-    train_dataset, rest = random_split(train_dataset, [int(0.1 * len(train_dataset)), int(0.9 * len(train_dataset))])
-    test_dataset, rest = random_split(test_dataset, [int(0.1 * len(test_dataset)), int(0.9 * len(test_dataset))])
+    #train_dataset, rest = random_split(train_dataset, [int(0.1 * len(train_dataset)), int(0.9 * len(train_dataset))])
+    #test_dataset, rest = random_split(test_dataset, [int(0.1 * len(test_dataset)), int(0.9 * len(test_dataset))])
 
 
     train_test_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)

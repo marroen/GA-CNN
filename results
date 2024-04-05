@@ -1,0 +1,377 @@
+----- ANALYZING BEST HP -----
+Final best HP: 0.8814054323592272
+Best HP values:
+num_conv: 2
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 1
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 140
+padding: 0
+activation_fun: 2
+pool_type: 0
+dropout: 0
+dropout_rate: 0.3686321124596793
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 41
+batch_size: 47
+momentum: 0.5227651886353928
+l1_norm_rate: 0.07556563213918935
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED BEST HP -----
+----- ANALYZING TOP 5 HP -----
+HP values and fitnesses of top 5:
+----- ANALYZING TOP -----
+Number 0
+HP fitness: 0.8814054323592272
+HP values:
+num_conv: 2
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 1
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 140
+padding: 0
+activation_fun: 2
+pool_type: 0
+dropout: 0
+dropout_rate: 0.3686321124596793
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 41
+batch_size: 47
+momentum: 0.5227651886353928
+l1_norm_rate: 0.07556563213918935
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZING TOP -----
+Number 1
+HP fitness: 0.8728574816899116
+HP values:
+num_conv: 2
+num_kernels: 15
+kernel_size: 3
+conv_stride: 1
+num_pooling: 1
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 181
+padding: 0
+activation_fun: 2
+pool_type: 0
+dropout: 0
+dropout_rate: 0.4286577822233432
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 41
+batch_size: 91
+momentum: 0.6318408725891741
+l1_norm_rate: 0.07556563213918935
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZING TOP -----
+Number 2
+HP fitness: 0.8697406474163314
+HP values:
+num_conv: 2
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 2
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 140
+padding: 0
+activation_fun: 0
+pool_type: 0
+dropout: 0
+dropout_rate: 0.4286577822233432
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 41
+batch_size: 47
+momentum: 0.692999196783646
+l1_norm_rate: 0.07556563213918935
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZING TOP -----
+Number 3
+HP fitness: 0.8578971298937569
+HP values:
+num_conv: 2
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 2
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 148
+padding: 3
+activation_fun: 0
+pool_type: 1
+dropout: 0
+dropout_rate: 0.4286577822233432
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 41
+batch_size: 47
+momentum: 0.6318408725891741
+l1_norm_rate: 0.07556563213918935
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZING TOP -----
+Number 4
+HP fitness: 0.7533046913927937
+HP values:
+num_conv: 2
+num_kernels: 15
+kernel_size: 3
+conv_stride: 1
+num_pooling: 0
+pool_size: 2
+pool_stride: 2
+num_dense: 1
+num_neurons: 181
+padding: 0
+activation_fun: 2
+pool_type: 0
+dropout: 0
+dropout_rate: 0.2805004321929969
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 7
+batch_size: 63
+momentum: 0.6376808610013037
+l1_norm_rate: 0.07556563213918935
+optimizer: 1
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZING TOP -----
+Number 5
+HP fitness: 0.6837179312729553
+HP values:
+num_conv: 1
+num_kernels: 5
+kernel_size: 3
+conv_stride: 2
+num_pooling: 0
+pool_size: 2
+pool_stride: 1
+num_dense: 1
+num_neurons: 141
+padding: 3
+activation_fun: 2
+pool_type: 1
+dropout: 0
+dropout_rate: 0.4524691494753484
+batch_norm: 1
+learning_rate: 0.4540066986299808
+epochs: 7
+batch_size: 29
+momentum: 0.930229964336954
+l1_norm_rate: 0.659674488988145
+optimizer: 0
+l2_pen: 0.08302143717655085
+----- ANALYZED TOP -----
+----- ANALYZED TOP 5 HP -----
+----- ANALYZING BOTTOM 5 HP -----
+HP values and fitnesses of bottom 5:
+----- ANALYZING BOTTOM -----
+Number 0
+HP fitness: 0.359890814781189
+HP values:
+num_conv: 2
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 1
+pool_size: 2
+pool_stride: 2
+num_dense: 5
+num_neurons: 140
+padding: 0
+activation_fun: 2
+pool_type: 0
+dropout: 1
+dropout_rate: 0.24938242465406196
+batch_norm: 1
+learning_rate: 0.013207272115559677
+epochs: 47
+batch_size: 91
+momentum: 0.6318408725891741
+l1_norm_rate: 0.058265497382854796
+optimizer: 1
+l2_pen: 0.01961170522690175
+----- ANALYZED BOTTOM -----
+----- ANALYZING BOTTOM -----
+Number 1
+HP fitness: 0.48660043485466686
+HP values:
+num_conv: 1
+num_kernels: 5
+kernel_size: 3
+conv_stride: 1
+num_pooling: 0
+pool_size: 2
+pool_stride: 1
+num_dense: 2
+num_neurons: 187
+padding: 0
+activation_fun: 0
+pool_type: 1
+dropout: 0
+dropout_rate: 0.4524691494753484
+batch_norm: 0
+learning_rate: 0.681996019739625
+epochs: 36
+batch_size: 29
+momentum: 0.930229964336954
+l1_norm_rate: 0.23500427557606218
+optimizer: 1
+l2_pen: 0.7536584790965565
+----- ANALYZED BOTTOM -----
+----- ANALYZING BOTTOM -----
+Number 2
+HP fitness: 0.5478612269395541
+HP values:
+num_conv: 1
+num_kernels: 10
+kernel_size: 3
+conv_stride: 1
+num_pooling: 2
+pool_size: 2
+pool_stride: 1
+num_dense: 4
+num_neurons: 161
+padding: 4
+activation_fun: 1
+pool_type: 0
+dropout: 0
+dropout_rate: 0.33619399973857467
+batch_norm: 1
+learning_rate: 0.7272849768095936
+epochs: 15
+batch_size: 95
+momentum: 0.6622567753914759
+l1_norm_rate: 0.9519054535744147
+optimizer: 0
+l2_pen: 0.5188968764782494
+----- ANALYZED BOTTOM -----
+----- ANALYZING BOTTOM -----
+Number 3
+HP fitness: 0.5678094706605455
+HP values:
+num_conv: 2
+num_kernels: 10
+kernel_size: 3
+conv_stride: 1
+num_pooling: 2
+pool_size: 2
+pool_stride: 1
+num_dense: 4
+num_neurons: 166
+padding: 2
+activation_fun: 0
+pool_type: 0
+dropout: 1
+dropout_rate: 0.41016168735078773
+batch_norm: 0
+learning_rate: 0.7272849768095936
+epochs: 28
+batch_size: 25
+momentum: 0.7993627364191092
+l1_norm_rate: 0.6831453288211182
+optimizer: 0
+l2_pen: 0.5188968764782494
+----- ANALYZED BOTTOM -----
+----- ANALYZING BOTTOM -----
+Number 4
+HP fitness: 0.5694597876525495
+HP values:
+num_conv: 5
+num_kernels: 16
+kernel_size: 3
+conv_stride: 2
+num_pooling: 2
+pool_size: 2
+pool_stride: 1
+num_dense: 4
+num_neurons: 148
+padding: 3
+activation_fun: 3
+pool_type: 0
+dropout: 0
+dropout_rate: 0.33619399973857467
+batch_norm: 0
+learning_rate: 0.4540066986299808
+epochs: 11
+batch_size: 99
+momentum: 0.9078418156923808
+l1_norm_rate: 0.6491264331454517
+optimizer: 2
+l2_pen: 0.24039970507466132
+----- ANALYZED BOTTOM -----
+----- ANALYZING BOTTOM -----
+Number 5
+HP fitness: 0.5777063660846888
+HP values:
+num_conv: 4
+num_kernels: 17
+kernel_size: 3
+conv_stride: 2
+num_pooling: 2
+pool_size: 2
+pool_stride: 2
+num_dense: 2
+num_neurons: 161
+padding: 3
+activation_fun: 0
+pool_type: 1
+dropout: 0
+dropout_rate: 0.49162996988203544
+batch_norm: 1
+learning_rate: 0.48945955653200857
+epochs: 15
+batch_size: 47
+momentum: 0.5030379865669639
+l1_norm_rate: 0.16133860023140728
+optimizer: 0
+l2_pen: 0.9078729984633097
+----- ANALYZED BOTTOM -----
+----- ANALYZED BOTTOM 5 HP -----
+----- AVERAGE FITNESSES -----
+0.36613339483476576
+0.4095078399689127
+0.4128462787937253
+0.43962844145884655
+0.44307944466717225
+0.4582997721875427
+0.4693811882343595
+0.4815771626155502
+0.5041102125261592
+0.5041102125261591
+0.5161668090582228
+0.537106682618677
+0.5371776978494917
+0.5490282932404674
+0.5970503221439054
+0.6072489520046418
+0.6084405800675616
+0.6179221185241464
+0.626309645272829
+0.6447184720509137
