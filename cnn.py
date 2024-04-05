@@ -15,15 +15,6 @@ from torcheval.metrics.functional import multiclass_f1_score
 from sklearn.metrics import confusion_matrix
 from hp import HPChromosome
 import math
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
 
 def calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, padding):
     out_dim = input_dim
@@ -45,7 +36,6 @@ def calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride,
             num_pooling = num_pooling - 1
     out_dim = int(out_dim * out_dim * num_kernels)
     return out_dim
-#print("test out", calc_output_size(28, 5, 16, 5, 1, 1, 2, 2, 0))
 
 def get_activation(num):
     if num == 0:
@@ -81,7 +71,6 @@ class LeNet5(nn.Module):
         super().__init__()
 
         con_out = calc_output_size(input_dim, num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, padding)
-        #print("con_out", con_out)
         self.valid = True
         if con_out == 0 or num_conv == 0 or num_dense == 0:
             self.valid = False
@@ -97,11 +86,9 @@ class LeNet5(nn.Module):
         num_conv = num_conv - 1
         while num_conv > 0 or num_pooling > 0:
             if num_pooling > 0:
-                #print("v pool")
                 layers.append(get_pool_type(pool_type, pool_size, pool_stride))
                 num_pooling = num_pooling - 1
             if num_conv > 0:
-                #print("v conv")
                 layers.append(nn.Conv2d(num_kernels, num_kernels, kernel_size=kernel_size, stride=conv_stride, padding=padding))
                 if batch_norm:
                     layers.append(nn.BatchNorm2d(num_features=num_kernels))
@@ -127,7 +114,6 @@ class LeNet5(nn.Module):
                     layers.append(nn.Dropout(p=dropout_rate))
             num_dense = num_dense - 1
         self.dense_layers = nn.Sequential(*layers)
-        #print("con_out", con_out)
 
 
     def forward(self, x):
@@ -192,7 +178,6 @@ def evaluate(model, test_loader, criterion):
     test_loss /= len(test_loader.dataset)
     accuracy = 100. * correct / total
     #f1 = multiclass_f1_score(input, target, num_classes=4)
-    #print(f"F1 score: {f1.item()}")
 
 
     true_labels = []
@@ -215,9 +200,6 @@ def evaluate(model, test_loader, criterion):
     # Calculate precision and recall
     precision = TP / ((TP + FP) + 0.001)
     recall = TP / ((TP + FN) + 0.001)
-
-    #print(f"Precision: {precision:.4f}")
-    #print(f"Recall: {recall:.4f}")
 
     f1_score = 2 * (precision * recall) / ((precision + recall) + 0.001)
     return test_loss, accuracy, f1_score
@@ -296,7 +278,6 @@ def cnn_parameterized(hp):
         train_model(model, train_test_loader, test_loader, device, num_epochs=epochs, learning_rate=learning_rate, num_classes=10, optimizer=optimizer, momentum=momentum, l2_pen=l2_pen, l1_norm_rate=l1_norm_rate)
 
         test_loss, test_accuracy, f1_score = evaluate(model, test_loader, nn.CrossEntropyLoss())
-        #print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}%, F1: {f1_score:.4f}')
         fitness = combined_eval(test_loss, test_accuracy, f1_score)
         print("Fitness of this model:", fitness)
         return fitness

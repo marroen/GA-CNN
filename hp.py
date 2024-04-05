@@ -6,7 +6,6 @@ class HPChromosome:
     num_conv, num_kernels, kernel_size, conv_stride, num_pooling, pool_size, pool_stride, num_dense, num_neurons, padding, activation_fun, pool_type, dropout, dropout_rate, batch_norm, learning_rate, epochs, batch_size, momentum, l1_norm_rate, optimizer, l2_pen
     '''
 
-    # TODO: initialize with random values within ranges
     def __init__(self, num_conv = None, num_kernels = None, kernel_size = None, conv_stride = None, num_pooling = None, pool_size = None,
                  pool_stride = None, num_dense = None, num_neurons = None, padding = None, activation_fun = None, pool_type = None,
                  dropout = None, dropout_rate = None, batch_norm = None, learning_rate = None, epochs = None, batch_size = None,

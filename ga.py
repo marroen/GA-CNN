@@ -105,7 +105,6 @@ def create_pop(n):
 def create_pop_fit_map(pop):
     hp_fits = {}
     for hp in pop:
-        #print_hp_values(hp)
         hp_fits[hp] = cnn_parameterized(hp)
     return hp_fits
 
@@ -132,7 +131,6 @@ def selection(pop_fit_map, mutation_rate):
             pop_fit_map.pop(keys[i+1])
             for winner in winners:
                 pop_fit_map[winner[0]] = winner[1]
-    #print("Ensuring len(pop_fit_map) == n:", len(pop_fit_map))
 
 def tournament(mother, father, children):
     child1_fitness = cnn_parameterized(children[0])
