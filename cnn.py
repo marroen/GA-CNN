@@ -134,8 +134,8 @@ def get_data(batch_size=64, split=0.8):
     test_dataset = datasets.FashionMNIST(root='./data', train=False, transform=transform, download=True)
 
     #This is to use only 10% of the data for faster training. Comment it at the end
-    #train_dataset, rest = random_split(train_dataset, [int(0.1 * len(train_dataset)), int(0.9 * len(train_dataset))])
-    #test_dataset, rest = random_split(test_dataset, [int(0.1 * len(test_dataset)), int(0.9 * len(test_dataset))])
+    train_dataset, rest = random_split(train_dataset, [int(0.1 * len(train_dataset)), int(0.9 * len(train_dataset))])
+    test_dataset, rest = random_split(test_dataset, [int(0.1 * len(test_dataset)), int(0.9 * len(test_dataset))])
 
 
     train_test_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
